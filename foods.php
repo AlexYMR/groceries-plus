@@ -12,8 +12,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $price = $_POST['price'];
   $oz = $_POST['oz'];
   $store = strtolower($_POST['store']);
-  $store = strtoupper($store[0]) . substr($store,1)
-  $store = $storeNames[$store];
+  $store = strtoupper($store[0]) . substr($store,1);
+  if(array_key_exists($storeNames,$store)){
+    $store = $storeNames[$store];
+  } else{
+    $store = "";
+  }
 
   if(!ctype_alpha($name[0])){
 ?>
