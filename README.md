@@ -3,9 +3,11 @@
 
 _TO DO:_
 
-- [ ] INDEX PAGE
+- [x] INDEX PAGE
 - [ ] ITEM PAGE
 - [ ] FOODS PAGE
+- [ ] > need backend to dynamically create item rows (test delete)
+- [x] > everything else nearly done :)
 - [ ] STORES PAGE
 
 _There are many details in-between._

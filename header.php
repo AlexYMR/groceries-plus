@@ -9,5 +9,6 @@
   <link rel="stylesheet" href="css/custom.css">
   <title>Groceries+</title>
 </head>
+<script src="config/notification.js"></script>
 <body>
   

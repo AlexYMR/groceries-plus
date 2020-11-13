@@ -5,6 +5,10 @@
 	--light_color: #fff;
 }	
 
+.light{
+  color:var(--light_color);
+}
+
 .primary{
   color:var(--primary_color);
 }
@@ -15,11 +19,13 @@
 
 body{
   margin:0;
+  color:var(--light_color);
 }
 
 .hero{
   background: url("../images/bg.jpg") no-repeat center center/ cover;
-  height:100vh;
+  min-height:100vh;
+  background-attachment:fixed; /* fixes bg in place */
   position:relative;
 }
 
@@ -33,12 +39,34 @@ body{
   background: rgba(0,0,0,.5);
 }
 
+.hero *{
+  z-index:10;
+}
+
 .container{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  height:100vh;
+  min-height:100vh;
+}
+
+.storeContainer,
+.foodContainer{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:30%;
+  min-width:450px;
+  margin:auto;
+  min-height:100vh;
+  background: #42413c;
+  /* position:relative; makes it lighter color idk why*/
+}
+
+a:hover,a{
+  text-decoration:none;
 }
 
 ul{
@@ -46,4 +74,75 @@ ul{
   display:flex;
   flex-direction:column;
   align-items:center;
+}
+
+.lineDecoration{
+	width:60%;
+	height:2px;
+	margin:10px auto 20px auto;
+	background:var(--primary_color);
+	display:block;
+}
+
+.fw{
+  width:100%;
+}
+
+.req::before{
+	content:'*';
+	color:var(--primary_color);
+	display:inline;
+}
+
+.hidden{
+	display:none;
+}
+
+.btn_sel{
+	background-color: var(--dark) !important;
+	color: var(--primary_color) !important;
+}
+
+/* MANAGE FOOD */
+#manage_stores_container,
+#manage_foods_container{
+  width:70%;
+  margin:20px auto;
+}
+
+#store_options,
+#food_options{
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+}
+
+.manage_foods_delete_container label{
+  padding:0;
+  margin:0;
+}
+
+/* NOTIFICATIONS */
+.error,
+.success{
+	font-size:12px;
+	background: #333;
+	color:#ff7659;
+	/* margin: 10px 0 5px 0; */
+}
+
+.success{
+	background: #333;
+	color:var(--primary_color);
+}
+
+.notification{
+	text-align:center;
+	width:85%;
+	padding:10px;
+	max-width:1280px;
+	margin:0 auto;
+	margin-bottom:20px;
 }
