@@ -2,6 +2,74 @@
 include("config/config.php");
 include("config/functions.php");
 include("header.php");
+
+$storeNames = array(); //getStoreNames();
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+	//for add
+	if(isset($_POST["addStore"])){
+		// info sent from form
+		$store = strtolower($_POST['sn']);
+		$store = strtoupper($store[0]) . substr($store,1);
+	
+		//can do more error checking if time allows...    
+	
+		$sql = "INSERT INTO Stores(name) VALUES (?)";
+			
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("s", $store);
+	
+		if($stmt->execute()){
+?>
+			<script>
+				document.addEventListener("DOMContentLoaded", function(event){
+					createNotification("success",document.querySelector("body"),"Successfully added store to database!",3);
+				},{once:true});
+			</script>
+<?php
+			} else{
+?>
+			<script>
+				document.addEventListener("DOMContentLoaded", function(event){
+					createNotification("error",document.querySelector("body"),"An error has occurred. The store has not been added to the database.",3);
+				},{once:true});
+			</script>
+<?php
+		}
+	}
+	
+	//for delete
+	if(isset($_POST["deleteStore"])){
+		// info sent from form
+		$store = $storeNames[$_POST['sn']];
+	
+		//can do more error checking if time allows...    
+	
+		$sql = "DELETE FROM Stores WHERE sid=(?)";
+			
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("i", $store);
+	
+		if($stmt->execute()){
+?>
+			<script>
+				document.addEventListener("DOMContentLoaded", function(event){
+					createNotification("success",document.querySelector("body"),"Successfully deleted store from database!",3);
+				},{once:true});
+			</script>
+<?php
+			} else{
+?>
+			<script>
+				document.addEventListener("DOMContentLoaded", function(event){
+					createNotification("error",document.querySelector("body"),"An error has occurred. The store has not been removed from the database.",3);
+				},{once:true});
+			</script>
+<?php
+		}
+	}
+}
 ?>
 
 <header class="hero">
@@ -27,7 +95,7 @@ include("header.php");
               <label for="sn" class="req">Store Name:</label>
 							<input required class="fw" type="text" name="sn">
 
-              <button type="submit" class="button-primary fw">Add Store</button>
+              <button type="submit" name="addStore" class="button-primary fw">Add Store</button>
           </form>
       </div>
       
@@ -35,7 +103,7 @@ include("header.php");
       <div name="delete_container" class="hidden">
         <div class="manage_stores_delete_container">
 				  <label for="store">Store to delete:</label>
-					<select required class="fw" name="store">
+					<select required class="fw" name="sn">
 						<option value="">Select store</option>
 						<?php
 							// Iterating through the keys of storeNames
@@ -47,7 +115,7 @@ include("header.php");
 						?>
 					</select>
 					
-					<button type="submit" class="button-primary fw">Delete Store</button>
+					<button type="submit" name="deleteStore" class="button-primary fw">Delete Store</button>
 
         </div>
       </div>

@@ -12,7 +12,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $price = $_POST['price'];
   $oz = $_POST['oz'];
   $store = strtolower($_POST['store']);
-  $store = strtoupper($store[0]) . substr($store,1);
+  $store = strtoupper($store[0]) . substr($store,1)
+  $store = $storeNames[$store];
 
   if(!ctype_alpha($name[0])){
 ?>
@@ -35,7 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 ?>
       <script>
         document.addEventListener("DOMContentLoaded", function(event){
-          createNotification("success",document.querySelector("body"),"Successfully added food to database!",3);
+          createNotification("success",document.querySelector("body"),"Successfully added food item to database!",3);
         },{once:true});
       </script>
 <?php
