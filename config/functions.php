@@ -5,13 +5,18 @@ include_once("config.php");
 function getStoreNames(){
 	global $conn;
 	$storeNames = array();
-	$sql='CALL getStoreNames()'; //counting on this being an index
+	$sql='select * from Stores'; //counting on this being an index
 	$stmt=$conn->prepare($sql);
-	$stmt->execute();
-	$stmt->bind_result($name,$sid);
+	//$stmt->bind_param("s","getStoreNames");
+	if($stmt->execute()){
+		$stmt->bind_result($sid,$name);
+	} else{
+		echo "Nope";
+	}
 
-	//dictionary with name as index, store sid as key
+	//dictionary with name as value, store sid as key
 	while($stmt->fetch()){
+		// $storeNames[$sid] = $name;
 		$storeNames[$name] = $sid;
 	}
 

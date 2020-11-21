@@ -1,3 +1,8 @@
+*{
+  z-index:3;
+  transition:all .3s ease;
+}
+
 :root{
 	--primary_color:#33C3F0;/* #a00f0f;*/
 	--dark_primary: #2200; /*first digits for ea. color reduced by 3*/
@@ -24,7 +29,8 @@ body{
 
 .hero{
   background: url("../images/bg.jpg") no-repeat center center/ cover;
-  min-height:100vh;
+  /* let hero grow if content overflows 100vh, but don't let it become less */
+  min-height:100vh; 
   background-attachment:fixed; /* fixes bg in place */
   position:relative;
 }
@@ -40,7 +46,7 @@ body{
 }
 
 .hero *{
-  z-index:10;
+  z-index:1;
 }
 
 .container{
@@ -55,7 +61,9 @@ body{
 .foodContainer{
   display:flex;
   flex-direction:column;
+  /* cross axis */
   align-items:center;
+  /* main axis */
   justify-content:center;
   width:30%;
   min-width:450px;
@@ -63,6 +71,24 @@ body{
   min-height:100vh;
   background: #42413c;
   /* position:relative; makes it lighter color idk why*/
+}
+
+.storeContainer h1,
+.foodContainer h1{
+  margin-top:2rem;
+}
+
+.backButton{
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:10;
+}
+
+button:hover,
+button-primary:hover{
+  background-color: var(--dark) !important;
+	color: var(--primary_color) !important;
 }
 
 a:hover,a{
@@ -135,14 +161,19 @@ ul{
 
 .success{
 	background: #333;
-	color:var(--primary_color);
+  color:var(--primary_color);
 }
 
 .notification{
-	text-align:center;
-	width:85%;
-	padding:10px;
-	max-width:1280px;
-	margin:0 auto;
-	margin-bottom:20px;
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  line-height: 2.5;
+  overflow: hidden; 
+  box-shadow:0 0 5px black;
+  overflow-wrap:break-word;
+  box-sizing: border-box;
 }

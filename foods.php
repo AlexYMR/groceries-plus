@@ -3,27 +3,26 @@ include("config/config.php");
 include("config/functions.php");
 include("header.php");
 
-$storeNames = array(); //getStoreNames();
+$storeNames = getStoreNames();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   // info sent from form
-  $name = strtolower($_POST['fn']);
-  $name = strtoupper($name[0]) . substr($name,1);
+  $name = $_POST['fn'];//strtolower($_POST['fn']);
+  //$name = strtoupper($name[0]) . substr($name,1);
   $price = $_POST['price'];
   $oz = $_POST['oz'];
-  $store = strtolower($_POST['store']);
-  $store = strtoupper($store[0]) . substr($store,1);
-  if(array_key_exists($storeNames,$store)){
+  $store = ucwords(strtolower($_POST['store'])); //title case
+  if(array_key_exists($store,$storeNames)){
     $store = $storeNames[$store];
   } else{
     $store = "";
   }
-
   if(!ctype_alpha($name[0])){
 ?>
     <script>
       document.addEventListener("DOMContentLoaded", function(event){
-        createNotification("error",document.querySelector("body"),"Invalid food name.",3);
+        const container = document.querySelector(".foodContainer");
+        createNotification("error",document.querySelector(".foodContainer"),container.children[1],"Invalid food name.",3);
       },{once:true});
     </script>
 
@@ -35,21 +34,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sddi", $name,$price,$oz,$store);
-
-    if($stmt->execute()){ // Successful insert
+    $stmt->execute();
+    if(!$stmt->error){ // Successful insert
 ?>
       <script>
         document.addEventListener("DOMContentLoaded", function(event){
-          createNotification("success",document.querySelector("body"),"Successfully added food item to database!",3);
+          const container = document.querySelector(".foodContainer");
+          createNotification("success",container,container.children[1],"Successfully added food item to database!",3);
         },{once:true});
       </script>
 <?php
-    }
-    else{
+    } else{
+      echo $stmt->error;
 ?>
       <script>
         document.addEventListener("DOMContentLoaded", function(event){
-          createNotification("error",document.querySelector("body"),"An error has occurred. The item has not been added to the database.",3);
+          const container = document.querySelector(".foodContainer");
+          createNotification("error",document.querySelector(".foodContainer"),container.children[1],"An error has occurred. The item has not been added to the database.",3);
         },{once:true});
       </script>
 <?php
@@ -60,12 +61,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 ?>
 <header class="hero">
   <section class="foodContainer">
-    <a style="position:absolute; left:0; top:0;" href="index.php">
+    <a class="backButton" href="index.php">
       <button class="button-primary">
         <i class="fas fa-chevron-left"></i>
       </button>
     </a>
-    
+    <!-- <div class="notification success">Food added successfully!</div> -->
     <h1><span class="light">Manage Foods</span></h1>
     <div id="manage_foods_container">
       <div id="food_options">  
@@ -121,15 +122,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               </thead>
               <tbody id="delete_foods_list">
                 <!-- Template -->
+                <!-- 
                 <tr>
                   <td>Chicken</td>
                   <td>Walmart</td>
                   <td>$.33</td>
                   <td><a href="#" class="delete" style="text-align:left">X</a></td>
                 </tr>
+                -->
 
                 <!-- MUST DYNAMICALLY CREATE TABLES WITH DATABASE -->
-
+<?php
+                //will want to index this for best efficiency
+                $sql = 'SELECT s.name,fid,f.name,price,oz from Foods as f INNER JOIN Stores as s ON f.sid = s.sid ORDER BY f.name';
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $stmt->bind_result($sname,$fid,$fn,$price,$oz);
+                
+                while($stmt->fetch())
+                {
+?>
+                  <tr>
+                    <td><?php echo $fn ?></td>
+                    <td><?php echo $sname ?></td>
+                    <td><?php echo "$" . round($price/$oz,2)?></td>
+                    <td style="display:none" name="id"><?php echo $fid;?></td>
+                    <td>
+                      <a href="#" name="delete" style="text-align:left">X</a>
+                    </td>
+                  </tr>
+<?php
+                }
+?>
               </tbody>
           </table>
 

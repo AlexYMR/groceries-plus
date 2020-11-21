@@ -8,7 +8,13 @@
   <link rel="stylesheet" href="css/skeleton.css">
   <link rel="stylesheet" href="css/custom.css">
   <title>Groceries+</title>
+  <script src="config/notification.js"></script>
+  <!-- interesting way to avoid form resubmissions with JS -->
+  <script>
+    if (window.history.replaceState){
+      window.history.replaceState(null,null,window.location.href);
+    }
+  </script>
 </head>
-<script src="config/notification.js"></script>
 <body>
   
