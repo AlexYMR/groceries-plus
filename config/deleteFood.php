@@ -9,13 +9,8 @@
 			$stmt->execute();
 
 			if(!$stmt->error){
-
-			}
-			
-			//could do some error checking as below, but idk the details tbh (cus this is very hacky, but idk AJAX or jQuery)
-			//so I'm omitting it
-			//if ($stmt->execute()){}
-			//else{}
-		} //else{}
+				//could do some error checking
+			}			
+		}
 	}
 ?>

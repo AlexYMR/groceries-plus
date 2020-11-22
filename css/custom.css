@@ -49,6 +49,23 @@ body{
   z-index:1;
 }
 
+.intro{
+  cursor:default;
+}
+
+.intro > span:last-child{
+  display:inline-block;
+}
+
+.intro:hover > span:first-child{
+  transform:scale(2);
+}
+
+.intro:hover > span:last-child{
+  transform:rotate(180deg) scale(1.2);
+  color:#fff;
+}
+
 .container{
   display:flex;
   flex-direction:column;
@@ -118,6 +135,10 @@ ul{
 	content:'*';
 	color:var(--primary_color);
 	display:inline;
+}
+
+.soft_hidden{
+  visibility:hidden;
 }
 
 .hidden{
