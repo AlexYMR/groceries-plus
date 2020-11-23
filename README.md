@@ -4,13 +4,13 @@
 _TO DO:_
 
 - [x] *INDEX PAGE*
-- [ ] *ITEM PAGE*
+- [x] *ITEM PAGE*
 - [X] *FOODS PAGE*
 - [x] *STORES PAGE*
 - [ ] Make sure index works properly--right now using select * from Stores;
 - [ ] Develop query to minimize item prices
-- [ ] *LOGIN PAGE*
-- [ ] *SUMMARY PAGE*
+- [x] *LOGIN PAGE*
+- [x] ~~*SUMMARY PAGE*~~
 
 **Questions:**
 1. Should we allow users to make new accounts? I say it's not even worth it for this.
