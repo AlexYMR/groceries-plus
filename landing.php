@@ -16,7 +16,7 @@ include("header.php");
 
     <ul>
       <li class="fw">
-        <a href="#">
+        <a href="items.php">
           <button class="main-select button-primary fw">
             Select Items
           </button>
