@@ -80,7 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <!-- All Foods -->
       <div name="items_container">
         <input style="margin:0 0 30px 0" type="text" name="filter" placeholder="Filter By Food Name">
-        <button class="button-primary clear_button">Clear Cart</button>
+        <button style="display:block" class="button-primary clear_button">Clear Cart</button>
         <table class="u-full-width" cellspacing="0">
           <thead>
             <tr>
@@ -97,10 +97,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <?php
             //will want to index this for best efficiency
             // $sql = 'SELECT name,min(price/oz),sid,price,oz,fid from Foods group by name having min(price/oz) order by name';
-            $sql = 'SELECT f.name,min(price/oz),s.name,f.price,f.oz from Foods as f inner join Stores as s on s.sid = f.sid group by f.name order by f.name';
+            $sql = 'SELECT * FROM (SELECT *,min(price/oz) FROM Foods GROUP BY name) AS t LEFT JOIN Stores s USING(sid)';
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-            $stmt->bind_result($fn,$minCost,$sname,$price,$oz);
+            $stmt->bind_result($sid,$fid,$fn,$price,$oz,$minCost,$sname);
             
             while($stmt->fetch())
             {

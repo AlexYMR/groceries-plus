@@ -7,8 +7,8 @@ _TO DO:_
 - [x] *ITEM PAGE*
 - [X] *FOODS PAGE*
 - [x] *STORES PAGE*
-- [ ] Make sure index works properly--right now using select * from Stores;
-- [ ] Develop query to minimize item prices
+- [x] Make sure index works properly--right now using select * from Stores;
+- [x] Develop query to minimize item prices
 - [x] *LOGIN PAGE*
 - [x] ~~*SUMMARY PAGE*~~
 
