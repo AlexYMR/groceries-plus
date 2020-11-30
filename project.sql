@@ -1,33 +1,46 @@
-create table Foods(
-    fid integer,
-    name char(30),
-    price real,
-    oz real,
-    sid integer
-);
+use alex_rafael;
+use rsilva377;
 
 create table Stores(
-    sid integer,
-    name char(30)
+    sid integer not null auto_increment,
+    name char(30) not null unique,
+    primary key (sid)
 );
-
+create table Foods(
+    fid integer not null auto_increment,
+    name char(30) not null,
+    price real not null check (price>0),
+    oz real not null check (oz>0),
+    sid integer not null,
+    primary key (fid, sid),
+    foreign key (sid) references Stores (sid)
+                  on delete cascade
+);
+create table Users(
+    first_name char(20) not null,
+    last_name char(20) not null,
+    uid integer not null auto_increment,
+    username char(50) not null unique,
+    password varchar(255) not null,
+    primary key (uid)
+);
 create table Carts(
-    cid integer,
-    fid integer,
-    quantity integer
+    cid integer not null auto_increment,
+    fid integer not null,
+    uid integer not null,
+    quantity integer not null check (quantity>=0),
+    primary key (cid, fid),
+    foreign key (fid) references Foods (fid)
+                  on delete cascade,
+    foreign key (uid) references Users (uid)
+                  on delete cascade
 );
 
-insert into Stores (sid, name)
-values (5641, 'Walmart'),
+insert into Stores (sid, name) values (5641, 'Walmart'),
        (8972, 'Wegmans'),
        (6879, 'Whole Foods'),
        (1354, 'Target');
-
-create index getStoreNames
-on Stores (sid, name);
-
-insert into Foods(fid, name, price, oz, sid)
-values (468758, 'cheerios', 3.64, 18, 5641),
+insert into Foods(fid, name, price, oz, sid) values (468758, 'cheerios', 3.64, 18, 5641),
        (468758, 'cheerios', 3.79, 18, 8972),
        (468758, 'cheerios', 2.99, 8.9, 6879),
        (468758, 'cheerios', 1.99, 8.9, 1354),
@@ -228,5 +241,16 @@ values (468758, 'cheerios', 3.64, 18, 5641),
        (654897, 'gelatin', 1.38, 6, 1354),
        (231568, 'cheese whales', 2.34, 16, 5641),
        (231568, 'cheese whales', 2.15, 16, 8972),
-       (231568, 'cheese whales', 1.99, 12, 6879)
-;
+       (231568, 'cheese whales', 1.99, 12, 6879);
+
+/* Non-clustered indexes */
+create index getStoreNames on Stores (sid, name);
+create index getFoodNames on Foods (fid, name, price, oz);
+
+/* Query that selects items with minimal price per oz from a list of items */
+select * from (select *, min(price/oz) from Foods group by name) as t left join Stores s using(sid);
+
+/* Query to optimize */
+explain select f.name,fid,s.name,price,oz
+from Foods as f inner join Stores as s
+on f.sid = s.sid order by s.name;
